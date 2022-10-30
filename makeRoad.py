@@ -49,7 +49,7 @@ def makeRoad(maze_map) -> list:
 
             # print("xxxxx",x,y)
             # print(visited)
-            if(flag-2 >= 0):
+            if(len(road) > abs(flag-2)):
                 x,y = road[flag-2][:2]
             else:
                 x,y = 1,1

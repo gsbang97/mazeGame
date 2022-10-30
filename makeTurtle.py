@@ -1,28 +1,35 @@
 import turtle, time
-from copy import deepcopy
 
 def makeTurtle(size,road,visited,turtle_map)-> None:
-    #turtle_map = deepcopy(test.test_map1)
-    turtle.setup(width=size*50,height=size*50)
+    turtle.setup(width=800,height=500)
     t = turtle.Turtle()
     t.shape("turtle")
     t.penup()
     t.home()
     t.speed(0)
+    t.hideturtle()
+    screen = turtle.Screen()
+    mario = ["./image/mario_up.gif","./image/mario_left.gif","./image/mario_down.gif","./image/mario_right.gif"]
+    mario_block = "./image/mario_block.gif"
+    mario_mush = "./image/mario_mush.gif"
+    mario_background2 = "./image/mario_background2.gif"
+    for m in mario:
+        screen.addshape(m)
+    screen.addshape(mario_block)
+    screen.addshape(mario_mush)
+    screen.bgpic(mario_background2)
     s = 0
     for i in range(12):
         for j in range(12):
             t.goto(i*size,j*size)
             if(turtle_map[i][j] == 1):
-                t.pendown()
-                t.dot(size)
-                t.penup()
+                t.shape(mario_block)
+                t.stamp()
             if(turtle_map[i][j] == 2):
-                t.pendown()
-                t.color('red')
+                t.shape(mario_mush)
                 s = t.stamp()
-                t.penup()
-                t.color('black')
+    t.showturtle()
+    t.shape(mario[0])
     t.goto(size,size)
     t.color('blue')
     t.pendown()
@@ -38,9 +45,7 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
             k = 3
         else :
             k = 4
-        
-        t.right((t_pos-k)*90)
-        t_pos = k
+        t.shape(mario[k%4])
         time.sleep(0.1)
         t.goto(i*size,j*size)
         c_x, c_y = i,j
@@ -50,6 +55,7 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     t.clearstamp(s)
     visited.pop()
     print(t_pos)
+    t.shape(mario[0])
     while visited:
         x,y = visited.pop()
         k = 0
@@ -64,10 +70,9 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
             k = 3
         else :
             k = 4
+        t.shape(mario[k%4])
         c_x, c_y = x,y
         print(k,t_pos)
-        t.right((t_pos-k)*90)
-        t_pos = k
         time.sleep(0.1)
         t.goto(x*size,y*size)
         time.sleep(0.1)
