@@ -3,12 +3,16 @@ from copy import deepcopy
 
 def makeTurtle(size,road,visited,turtle_map)-> None:
     #turtle_map = deepcopy(test.test_map1)
+    
     turtle.setup(width=size*50,height=size*50)
     t = turtle.Turtle()
     t.shape("turtle")
     t.penup()
     t.home()
     t.speed(0)
+    screen = turtle.Screen()
+    image = "./image/*"
+    screen.addshape(image)
     s = 0
     for i in range(12):
         for j in range(12):
