@@ -1,11 +1,5 @@
 from copy import deepcopy
-import random
-visited = []
-bfs_map = []
-def BFS(maze_map,x,y):
-    global visited,bfs_map
-
-    
+import random    
 
 def makeMap()->list:
     maze_map= [
