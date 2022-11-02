@@ -81,7 +81,7 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
         t.shape(mario_king[1])
         time.sleep(0.01)
     print(t_pos)
-    t.shape(mario[0])
+    t.shape(mario_king[1])
     while visited:
         x,y = visited.pop()
         k = 0
