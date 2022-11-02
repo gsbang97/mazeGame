@@ -1,101 +1,108 @@
+from readline import read_init_file
+from xml.dom.minidom import Identified
 
-from copy import deepcopy
-import test,random
+
 def makeRoad(maze_map) -> list:
-    #maze_map = test.test_map1[:]
-
-    # maze_map_test2 = test.test_map1[:]
-    # maze_map_test = deepcopy(maze_map_test2)
-    optimal_road = []
-    road = [(1,1)]
-
+    # x증가, y증가, x감소, y감소 방향 배열
+    idx = ((1,0),(0,1),(-1,0),(0,-1))
+    
+    # 경로 
+    road = [[1,1]]
+    # 마리오 시점 맵
+    mario_map = [
+        [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+        [-1,-3,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,0,0,0,0,0,0,0,0,0,0,-1],
+        [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+    ]
+    # 현재 위치 
     x,y = 1,1
-    flag = 0
-    print(maze_map)
-    is_goal = maze_map[1][1] == 2
-    t_pos = 1
+    # 되돌아 갈때 사용하는 변수 
+    flag = 0    
+    # 방문한 위치
     visited = [[1,1]]
-    while not is_goal:
-    #for tmp in range(30):
+    # 목적지에 도착했는가?
+    is_finish = False
+    while not is_finish:
+        cnt = 0
         # 좌 우 위 아래 중 1이 아닌 것들
-        d = [[i,j] for i,j in [(x+1,y),(x,y+1),(x-1,y),(x,y-1)] if (maze_map[i][j]) != 1 and [i,j] not in visited ]
-
-        #random.shuffle(d)
-        # print(d)
-        # print("r",road[:][:2])
-        # print("s",road[:][:])
+        for i,j in idx:
+            if maze_map[x+i][y+j] == -1:
+                mario_map[x+i][y+j] = -1
+            elif maze_map[x+i][y+j] == 0:
+                mario_map[x+i][y+j] = -2
+        # 상하좌우중 벽이 아니고 방문하지 않은 곳 
+        d = [[x+i,y+j] for i,j in idx if (maze_map[x+i][y+j]) != -1 and [x+i,y+j] not in visited ]
         if d:
-
-            # for x in d:
-            #     x += [count(visited,x[:2])]
-            # print("v",visited)
-            # print("dd",d)
-            #d.sort(key= lambda x: (x[3],abs(t_pos-x[2]),x[2]))
-            # print(d)
+            # 해당 값이 존재할 때 벽이 없는 곳
+            # m_d = [[x+i,y+j] for i,j in idx if (maze_map[x+i][y+j]) != -1]
+            # 상하 좌우 중 목적지가 있는경우 반복문 종료, 그리고, 상하좌우 중 길인 경우 -2 값을 넣는다 
+            # 마리오 시점 -2: 방문하지 않은 길, -3: 방문한 길 , -1: 벽
             for i,j in d:
                 if maze_map[i][j] == 2:
-                    road.append((i,j))
+                    road.append([i,j])
                     visited.append([i,j])
-                    is_goal = True
+                    is_finish = True
                     break
-            if(is_goal):
-                break
                 
+            # 목적지 방문시 종료
+            if(is_finish):
+                break
+            # d가 있다는 것은 되돌아가지 않고 현재위치에서 방문하지 않은 길이 있다는 것이다. 따라서 해당길로 움직이므로 되돌아가는 변수를 초기화시킨다.
             flag = 0
-            road.append(d[0][:2])
-            visited.append(d[0][:2])
-            x,y = d[0][:2]
+            # 마리오 맵에 해당 값 입력
+            #mario_map[d[0][0]][d[0][1]] = mario_map[x][y] + 1
+            mario_map[d[0][0]][d[0][1]] = -3
+            # 움직이기
+            road.append(d[0])
+            visited.append(d[0])
+            # 현재위치 초기화
+            x,y = d[0]
         else:
+            # 만약 주변이 이미 지나온 길 + 벽으로 막혀있는경우
+            que = []
+            tmp_x, tmp_y = x,y
+            while True:
 
-            # print("xxxxx",x,y)
-            # print(visited)
-            if(len(road) > abs(flag-2)):
-                x,y = road[flag-2][:2]
-            else:
-                x,y = 1,1
-            road.append((x,y))
-            flag = flag - 2
-    cnt = 0
+                que = []
+                # 마리오 기준 주변에 이미 지나온 길 중에 그 사방에 돌아갈 길이 있다면
+                for i,j in idx:
+                    if mario_map[tmp_x+i][tmp_y+j] == -2:
+                        for a,b in idx:
+                            if mario_map[tmp_x+i+a][tmp_y+j+b] == 0:
+                                que.append((tmp_x+i,tmp_y+j))
+                                break
+                if que:
+                    flag = 0
+                    cnt+=1
+                    a,b = que[0]
+                    # 그 길로 돌아갈 수 있는 최단경로 찾기
+                    bfs_map = [[[] for _ in range(12)] for _ in range(12)]
+                    bfs_map[x][y].append([x,y])
+                    q = [[x,y]]
+                    is_goal = True
+                    while q and is_goal:
+                        c_x,c_y = q.pop()
+                        for i,j in [(c_x+n , c_y+m) for n,m in idx if (mario_map[c_x+n][c_y+m] < -1)]:
+                            if len(bfs_map[i][j]) == 0:
+                                bfs_map[i][j] = bfs_map[c_x][c_y][:] + [[i,j]]
+                                q.append([i,j])
+                                if (i,j) == (a,b):
+                                    is_goal = False
+                                    break
+                    road += bfs_map[a][b][1:]
+                    visited += bfs_map[a][b][1:]
+                    x,y = a,b
+                    break
+                else:
+                    tmp_x,tmp_y = road[flag-2]
+                    flag  = flag - 1                        
     return road, visited   
-    # for i,j in road:
-    #     cnt += 1
-    #     if maze_map_test[i][j] == 0 or maze_map_test[i][j] == 2:
-    #         maze_map_test[i][j] = str(cnt)
-    #     else:
-    #         maze_map_test[i][j] += " " +str(cnt)
-    # cnt  =  0
-    # while visited:
-    #     x,y = visited.pop()
-    #     d = [visited.index([i,j]) for i,j in [(x+1,y),(x,y+1),(x-1,y),(x,y-1)] if [i,j] in visited ]
-    #     if d:
-    #         visited = visited[:min(d)+1]
-    #     cnt += 1
-    #     if maze_map_test2[x][y] == 0 or maze_map_test2[x][y] == 2:
-    #         maze_map_test2[x][y] = str(cnt)
-    #     else:
-    #         maze_map_test2[x][y] += " " +str(cnt)
-    #for i,j in visited[::-1]:
-        
-
-    # for i in range(12):
-    #     for j in range(12):
-    #         print(maze_map_test[i][j],end= "\t")
-    #     print()
-    # for i in range(12):
-    #     for j in range(12):
-    #         print(maze_map_test2[i][j],end= "\t")
-    #     print()
-    # #print(visited[::-1])
-    # print(road)
-
-
-
-#import numpy as np
-#print(test.test_map)
-# def count(list,inner):
-#     cnt  = 0
-#     for x in list:
-#         if inner == x:
-#             cnt +=1
-#     return cnt
-
