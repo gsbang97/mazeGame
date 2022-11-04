@@ -4,11 +4,6 @@ def makeMap() -> list:
     d = 0
     while d<10:
         maze_map, d = makeMap_sub()
-               
-    for m in maze_map:
-        print(m)
-        
-    print(len(maze_map))
     return maze_map
 # 랜덤으로 벽을 생성해 맵을 만든다. 
 # 이때 생성되는 벽은 랜덤으로 지정되고, 시작지점에서 최단거리 10칸 이상인 곳에 지정하고,
