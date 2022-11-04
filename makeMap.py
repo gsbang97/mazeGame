@@ -1,10 +1,15 @@
 from copy import deepcopy
 import random    
 def makeMap() -> list:
-    while True:
-        map, d = makeMap_sub()
-        if d > 10:
-            return map
+    d = 0
+    while d<10:
+        maze_map, d = makeMap_sub()
+               
+    for m in maze_map:
+        print(m)
+        
+    print(len(maze_map))
+    return maze_map
 # 랜덤으로 벽을 생성해 맵을 만든다. 
 # 이때 생성되는 벽은 랜덤으로 지정되고, 시작지점에서 최단거리 10칸 이상인 곳에 지정하고,
 # 그런곳이 존재하지 않으면 가장 먼 곳에 목적지로 지정한다.
@@ -14,8 +19,6 @@ def makeMap_sub() -> tuple[list,int]:
     maze_map = [[0 for _ in range(10)] for _ in range(10)]
     wall_num = random.randint(10,30) # 벽의 개수 10~30개
     wall_list = random.sample(range(1,100),wall_num)
-    
-    random.shuffle(wall_list)
     # 벽은 -1로 지정
     for i in wall_list[:wall_num]:
         maze_map[i//10][i%10] = -1
@@ -49,6 +52,5 @@ def makeMap_sub() -> tuple[list,int]:
         maze_map[x] = [-1]+maze_map[x]+[-1]
     
     maze_map = [[-1 for _ in range(12)]] + maze_map + [[-1 for _ in range(12)]]
-    # for m in maze_map:
-    #     print(m)
+
     return maze_map, depth
