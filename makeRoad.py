@@ -157,7 +157,7 @@ def makeRoad(maze_map) -> list:
                 break
     visited = []
     while n:
-        q.append(n.pos)
+        visited.append(n.pos)
         n = n.up_link
     
     x,y = a,b          
