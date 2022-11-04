@@ -80,14 +80,10 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
         time.sleep(0.01)
         t.shape(mario_king[1])
         time.sleep(0.01)
-    print(t_pos)
+    #print(t_pos)
     t.shape(mario_king[1])
     while visited:
         x,y = visited.pop()
-        k = 0
-        d = [visited.index([x+i,y+j]) for i,j in [(1,0),(0,1),(-1,0),(0,-1)] if [x+i,y+j] in visited ]
-        if d:
-            visited = visited[:min(d)+1]
         w = where_go(c_x,c_y,x,y)
         if w == 0:
             t.shape(mario_king_jump[0 if t_pos == 3 else 1])
@@ -106,6 +102,5 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
         c_x, c_y = x,y
         time.sleep(0.1)
         # print(k,t_pos)
-        
         #time.sleep(0.1)
     turtle.mainloop()

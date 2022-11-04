@@ -11,21 +11,10 @@ def makeMap() -> list:
 # None -> map, 맵의 최대 깊이
 def makeMap_sub() -> tuple[list,int]:
     # 초기 맵 데이터 모든 맵이 다 길이다.
-    maze_map= [
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-    ]
+    maze_map = [[0 for _ in range(10)] for _ in range(10)]
     wall_num = random.randint(10,30) # 벽의 개수 10~30개
-    wall_list = [x for x in range(1,100)] 
-    # 각 주소를 1열로 나열했을 때 위치는 0~99번 이다. 따라서 이 벽을 랜덤으로 섞어 지정된 벽만큼만 따로 추출한다.
+    wall_list = random.sample(range(1,100),wall_num)
+    
     random.shuffle(wall_list)
     # 벽은 -1로 지정
     for i in wall_list[:wall_num]:
@@ -53,9 +42,6 @@ def makeMap_sub() -> tuple[list,int]:
         for j in range(10):
             if bfs_map[i][j] >= m:
                 goal_list.append((i,j))
-    # print(depth, goal_list)
-    # for x in bfs_map:
-    #     print(x)
     x,y = random.choice(goal_list)
     maze_map[x][y] = 2
     # 맵 테두리에 벽 세우기
@@ -63,5 +49,6 @@ def makeMap_sub() -> tuple[list,int]:
         maze_map[x] = [-1]+maze_map[x]+[-1]
     
     maze_map = [[-1 for _ in range(12)]] + maze_map + [[-1 for _ in range(12)]]
-    
+    # for m in maze_map:
+    #     print(m)
     return maze_map, depth
