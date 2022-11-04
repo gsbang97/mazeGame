@@ -4,14 +4,6 @@ class node:
     def __init__(self,x,y) -> None:
         self.pos = (x,y)
         pass
-    # def __str__(self) -> str:
-    #     s = "("+str(self.pos[0])+","+str(self.pos[1])+")"
-    #     n = self.up_link
-    #     while n:
-    #         s += "("+str(n.pos[0])+","+str(n.pos[1])+")"
-    #         n = n.up_link
-    #     return s
-
 def makeRoad(maze_map) -> list:
     # x증가, y증가, x감소, y감소 방향 배열
     idx = ((1,0),(0,1),(-1,0),(0,-1))
@@ -147,7 +139,7 @@ def makeRoad(maze_map) -> list:
     while q and is_goal:
         root = q.pop(0)
         c_x, c_y = root.pos
-        for i,j in [(c_x+n , c_y+m) for n,m in idx if (mario_map[c_x+n][c_y+m] < -1) and (c_x+n,c_y+m) not in v]:
+        for i,j in [(c_x+n , c_y+m) for n,m in idx if (mario_map[c_x+n][c_y+m] == -3) and (c_x+n,c_y+m) not in v]:
             v.append((i,j))    
             n = node(i,j)
             n.up_link = root
