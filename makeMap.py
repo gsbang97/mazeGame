@@ -13,13 +13,12 @@ def makeMap_sub() -> tuple[list,int]:
     # 초기 맵 데이터 모든 맵이 다 길이다.
     maze_map = [[0 for _ in range(10)] for _ in range(10)]
     wall_num = random.randint(10,30) # 벽의 개수 10~30개
-    wall_list = random.sample(range(1,100),wall_num)
+    wall_list = random.sample(range(1,99),wall_num)
     # 벽은 -1로 지정
     for i in wall_list:
         maze_map[i//10][i%10] = -1
     # 맵을 deepcopy하여 해당 맵의 최대 깊이를 찾는다.
     bfs_map = deepcopy(maze_map)
-    bfs_map[0][0] =0
     visited = [(0,0)]
     que = [(0,0)]
     depth = 0

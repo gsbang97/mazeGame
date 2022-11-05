@@ -13,12 +13,12 @@ class node:
         return s
 def makeRoad(maze_map) -> list:
     # x증가, y증가, x감소, y감소 방향 배열
-    idx = ((1,0),(0,1),(-1,0),(0,-1))
+    idx = [(1,0),(0,1),(-1,0),(0,-1)]
     
     # 경로 
     road = [(1,1)]
     # 마리오 시점 맵
-    mario_map = [[-1 for _ in range(12)]]+[[-1,0,0,0,0,0,0,0,0,0,0,-1] for _ in range(12)]+[[-1 for _ in range(12)]]
+    mario_map = [[-1 for _ in range(12)]]+[[-1,0,0,0,0,0,0,0,0,0,0,-1] for _ in range(10)]+[[-1 for _ in range(12)]]
     mario_map[1][1] = -3
     # 현재 위치 
     x,y = 1,1
@@ -28,7 +28,6 @@ def makeRoad(maze_map) -> list:
     # 목적지에 도착했는가?
     is_finish = False
     while not is_finish:
-        cnt = 0
         # 좌 우 위 아래 중 1이 아닌 것들
         for i,j in idx:
             if maze_map[x+i][y+j] == -1:
@@ -69,6 +68,9 @@ def makeRoad(maze_map) -> list:
             v = [(x,y)]
             is_goal = True
             n = None
+            if(x,y) == (9,1):
+                for m in mario_map:
+                    print(m)
             while q and is_goal:
                 root = q.pop(0)
                 c_x, c_y = root.pos
@@ -128,6 +130,6 @@ def makeRoad(maze_map) -> list:
         n = n.up_link
     
     x,y = a,b        
-    print(road)
-    print(visited)  
+    # print(road)
+    # print(visited)  
     return road[1:], visited   
