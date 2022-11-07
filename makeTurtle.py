@@ -21,7 +21,7 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     mario = ["./image/mario_right.gif","./image/mario_left.gif"] # 1,3 -> 0,1
     mario_block = "./image/mario_block.gif"
     mario_mush = "./image/mario_mush.gif"
-    mario_background2 = "./image/mario_background.gif"
+    mario_background = "./image/mario_background.gif"
     for m in mario:
         screen.addshape(m)
     for m in mario_king:
@@ -32,7 +32,9 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
         screen.addshape(m)
     screen.addshape(mario_block)
     screen.addshape(mario_mush)
-    screen.bgpic(mario_background2)
+    screen.addshape(mario_background)
+    screen.bgpic(mario_background)
+    screen.title("마리오 미로찾기")
     s = 0
     for i in range(12):
         for j in range(12):
