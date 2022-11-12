@@ -1,4 +1,6 @@
-import turtle, time
+import turtle, time, math
+from playsound import playsound
+
 def where_go(c_x,c_y,x,y)->int:
     if c_x - x == 1:
         return 1 
@@ -15,13 +17,13 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     t.speed(0)
     t.hideturtle()
     screen = turtle.Screen()
-    mario_jump = ["./image/mario_jump.gif","./image/mario_jump2.gif"]
-    mario_king_jump = ["./image/mario_king_jump.gif","./image/mario_king_jump2.gif"]
-    mario_king = ["./image/mario_king1.gif","./image/mario_king2.gif","./image/mario_king3.gif"]
-    mario = ["./image/mario_right.gif","./image/mario_left.gif"] # 1,3 -> 0,1
-    mario_block = "./image/mario_block.gif"
-    mario_mush = "./image/mario_mush.gif"
-    mario_background = "./image/mario_background.gif"
+    mario_jump = ["./src/image/mario_jump.gif","./src/image/mario_jump2.gif"]
+    mario_king_jump = ["./src/image/mario_king_jump.gif","./src/image/mario_king_jump2.gif"]
+    mario_king = ["./src/image/mario_king1.gif","./src/image/mario_king2.gif","./src/image/mario_king3.gif"]
+    mario = ["./src/image/mario_right.gif","./src/image/mario_left.gif"] # 1,3 -> 0,1
+    mario_block = "./src/image/mario_block.gif"
+    mario_mush = "./src/image/mario_mush.gif"
+    mario_background = "./src/image/mario_background.gif"
     for m in mario:
         screen.addshape(m)
     for m in mario_king:
@@ -35,6 +37,10 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     screen.addshape(mario_background)
     screen.bgpic(mario_background)
     screen.title("마리오 미로찾기")
+    playsound("./src/sound/BGM.wav",False)
+    # play = multiprocessing.Process(target=playsound,args=("./src/sound/BGM.wav",))
+    # play.start()
+
     s = 0
     for i in range(12):
         for j in range(12):
@@ -53,12 +59,14 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     t.goto(30,-215)
     t.showturtle()
     t.forward(180)
+    playsound("./src/sound/pipe.wav",False)
     t.speed(1)
     t.forward(10)
     t.hideturtle()
     t.speed(10)
     t.goto(20,20)
     t.showturtle()
+    
     t.pendown()
     t.speed(1)
     t_pos = 0
@@ -66,6 +74,7 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     for x,y in road:
         w = where_go(c_x,c_y,x,y)
         if(w == 3):
+            playsound("./src/sound/small_jump.wav",False)
             t.shape(mario_jump[t_pos%2])
             t.goto(x*size,y*size)
             t.penup()
@@ -87,16 +96,19 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     t.pensize(5)
     t.clearstamp(s)
     visited.pop()
+    playsound("./src/sound/power_up.wav",False)
     for _ in range(10):
         t.shape(mario_king[0])
         time.sleep(0.01)
         t.shape(mario_king[1])
         time.sleep(0.01)
     t.shape(mario_king[1])
+    
     while visited:
         x,y = visited.pop()
         w = where_go(c_x,c_y,x,y)
         if w == 3:
+            playsound("./src/sound/super_jump.wav",False)
             t.shape(mario_king_jump[t_pos%2])
             t.goto(x*size,y*size)
             t.penup()
@@ -109,4 +121,26 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
             t.shape(mario_king[t_pos%2+1])
         t.goto(x*size,y*size)
         c_x, c_y = x,y
+    t.speed(0)
+    t.hideturtle()
+    t.penup()
+    t.shape(mario_king[2])
+    t.goto(-280,140)
+    playsound("./src/sound/clear.wav",False)
+    
+    t.showturtle()
+    time.sleep(1)
+    t.speed(3)
+    t.goto(-280,-180)
+    t.shape(mario_king_jump[0])
+    t.speed(0)
+    for i in range(0,140,10):
+        p = math.pi * i/280
+        t.goto(i/2-280,math.sin(p)*50-180)
+    for i in range(0,140,10):
+        p = math.pi * i/280
+        t.goto(i/2-210,-130-math.sin(p)*85)
+    t.speed(3)
+    t.shape(mario_king[1])
+    t.goto(-70,-215)
     turtle.mainloop()
