@@ -121,7 +121,6 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
             t.shape(mario_king[t_pos%2+1])
         t.goto(x*size,y*size)
         c_x, c_y = x,y
-    #play.terminate()
     t.speed(0)
     t.hideturtle()
     t.penup()
@@ -137,17 +136,11 @@ def makeTurtle(size,road,visited,turtle_map)-> None:
     t.speed(0)
     for i in range(0,140,10):
         p = math.pi * i/280
-        #print(math.sin(p)*50-280,math.sin(p)*50-180, math.sin(i))
         t.goto(i/2-280,math.sin(p)*50-180)
     for i in range(0,140,10):
         p = math.pi * i/280
-        #print(math.sin(p)*50-280,math.sin(p)*50-180, math.sin(i))
         t.goto(i/2-210,-130-math.sin(p)*85)
-    # t.goto(-260,-140)
-    # t.goto(-230,-130)
-    #t.goto(-140,-215)
     t.speed(3)
     t.shape(mario_king[1])
-    #t.speed(3)
     t.goto(-70,-215)
     turtle.mainloop()
