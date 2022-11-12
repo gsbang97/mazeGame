@@ -62,11 +62,13 @@ def makeRoad(maze_map) -> list:
             x,y = des_list[0]
         else:
             # 만약 주변이 이미 지나온 길 + 벽으로 막혀있는경우
-            # 마리오 기준 주변에 이미 지나온 길 중에 그 사방에 돌아갈 길이 있다면
+            # 마리오 기준 주변에 이미 지나온 길 중에 그 사방에 돌아갈 길이 있다면 bfs 로 가장 가까운 미탐색 길을 탐색한다.
+            # root 노드는 현재위치
+            # 말단노드로 미탐색 길이 있는 곳을 찾으면 그 위치부터 부모노드를 따라가면서 경로를 저장한다.
             root = node(x,y)
             q = [root]
             v = [(x,y)]
-            is_goal = True
+            is_goal = True 
             n = None
             if(x,y) == (9,1):
                 for m in mario_map:
@@ -94,6 +96,7 @@ def makeRoad(maze_map) -> list:
                         break
             q = []
             x,y = n.pos
+            # 경로가 반대로 되어 있기 때문에 다시 되돌려준다.
             while n.up_link:
                 q.insert(0,n.pos)
                 t_x,t_y = n.pos
@@ -112,7 +115,7 @@ def makeRoad(maze_map) -> list:
     v = [(x,y)]
     is_goal = True
     n = None
-    cnt = 0
+    # 위 알고리즘과 동일하게 bfs로 가장 먼저 길을 찾은 경롤로 다시 반환해준다.
     while q and is_goal:
         root = q.pop(0)
         c_x, c_y = root.pos
