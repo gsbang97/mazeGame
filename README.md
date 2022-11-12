@@ -8,7 +8,5 @@
 
 제출물 2개: 프로그램에 대한 아이디어(word or hwp), 프로그램 파일
 
-데이터사이언스 22-2 팀프로젝트 과제
-
 pip3 install playsound
 pip3 install PyObjC
