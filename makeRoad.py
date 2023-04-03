@@ -3,18 +3,17 @@ class node:
     size = 0
     def __init__(self,x,y) -> None:
         self.pos = (x,y)
-        pass
     def __str__(self) -> str:
-        s = "("+str(self.pos[0])+","+str(self.pos[1])+")"
+        s = f"({str(self.pos[0])},{str(self.pos[1])})"
         n = self.up_link
         while n:
-            s += "("+str(n.pos[0])+","+str(n.pos[1])+")"
+            s += f"({str(n.pos[0])},{str(n.pos[1])})"
             n = n.up_link
         return s
 def makeRoad(maze_map) -> list:
     # x증가, y증가, x감소, y감소 방향 배열
     idx = [(1,0),(0,1),(-1,0),(0,-1)]
-    
+
     # 경로 
     road = [(1,1)]
     # 마리오 시점 맵
@@ -23,7 +22,7 @@ def makeRoad(maze_map) -> list:
     # 현재 위치 
     x,y = 1,1
     # 되돌아 갈때 사용하는 변수 
-    flag = 0    
+    flag = 0
     # 방문한 위치
     # 목적지에 도착했는가?
     is_finish = False
@@ -34,10 +33,11 @@ def makeRoad(maze_map) -> list:
                 mario_map[x+i][y+j] = -1
             elif maze_map[x+i][y+j] == 0 and mario_map[x+i][y+j] != -3:
                 mario_map[x+i][y+j] = -2
-        # 상하좌우중 벽이 아니고 방문하지 않은 곳 
-        des_list = [(x+i,y+j) for i,j in idx if (maze_map[x+i][y+j]) != -1 and (x+i,y+j) not in road ]
-        
-        if des_list:
+        if des_list := [
+            (x + i, y + j)
+            for i, j in idx
+            if (maze_map[x + i][y + j]) != -1 and (x + i, y + j) not in road
+        ]:
             # 해당 값이 존재할 때 벽이 없는 곳
             # 상하 좌우 중 목적지가 있는경우 반복문 종료, 그리고, 상하좌우 중 길인 경우 -2 값을 넣는다 
             # 마리오 시점 -2: 방문하지 않은 길, -3: 방문한 길 , -1: 벽
@@ -48,7 +48,7 @@ def makeRoad(maze_map) -> list:
                     x,y = i,j
                     is_finish = True
                     break
-                
+
             # 목적지 방문시 종료
             if(is_finish):
                 break
@@ -68,7 +68,7 @@ def makeRoad(maze_map) -> list:
             root = node(x,y)
             q = [root]
             v = [(x,y)]
-            is_goal = True 
+            is_goal = True
             n = None
             if(x,y) == (9,1):
                 for m in mario_map:
@@ -106,8 +106,8 @@ def makeRoad(maze_map) -> list:
                         mario_map[t_x+i][t_y+j] = -2 
                 n = n.up_link
             road += q
-                
-    
+
+
     a,b = 1,1
     # 그 길로 돌아갈 수 있는 최단경로 찾기
     root = node(x,y)
@@ -131,8 +131,8 @@ def makeRoad(maze_map) -> list:
     while n:
         visited.append(n.pos)
         n = n.up_link
-    
-    x,y = a,b        
+
+    x,y = a,b
     # print(road)
     # print(visited)  
     return road[1:], visited   

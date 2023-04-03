@@ -30,21 +30,19 @@ def makeMap_sub() -> tuple[list,int]:
             if 0 <= x+i <= 9  and 0<=y+j<=9 and (x+i,y+j) not in visited and maze_map[x+i][y+j] != -1:
                 que.append((x+i,y+j))
                 visited.append((x+i,y+j))
-                bfs_map[x+i][y+j] = depth    
+                bfs_map[x+i][y+j] = depth
     m = depth-1 if depth < 11 else 10
-    
+
     # 모든 맵 중에서 가장 멀리 있는 곳 or 10보다 큰 위치를 모두 저장한 뒤에 랜덤으로 추출해 그 지점을 목적지로 지정한다.
     goal_list = []
     for i in range(10):
-        for j in range(10):
-            if bfs_map[i][j] >= m:
-                goal_list.append((i,j))
+        goal_list.extend((i, j) for j in range(10) if bfs_map[i][j] >= m)
     x,y = random.choice(goal_list)
     maze_map[x][y] = 2
     # 맵 테두리에 벽 세우기
     for x in range(10) :
         maze_map[x] = [-1]+maze_map[x]+[-1]
-    
+
     maze_map = [[-1 for _ in range(12)]] + maze_map + [[-1 for _ in range(12)]]
 
     return maze_map, depth
